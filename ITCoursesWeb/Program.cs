@@ -1,4 +1,6 @@
 using ITCoursesWeb.Data;
+using ITCoursesWeb.Interfaces;
+using ITCoursesWeb.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddScoped<ICourseService, CourseService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
