@@ -4,6 +4,7 @@ using ITCoursesWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ITCoursesWeb.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241119074903_AddPropToCourse")]
+    partial class AddPropToCourse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace ITCoursesWeb.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("CoursePerson", b =>
-                {
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CourseId", "PersonId");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("CoursePerson");
-                });
 
             modelBuilder.Entity("ITCoursesWeb.Models.Course", b =>
                 {
@@ -60,6 +48,9 @@ namespace ITCoursesWeb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PersonId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TeacherId")
                         .HasColumnType("int");
 
@@ -67,6 +58,8 @@ namespace ITCoursesWeb.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
 
                     b.HasIndex("TeacherId");
 
@@ -86,8 +79,6 @@ namespace ITCoursesWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TeacherId");
-
                     b.ToTable("Groups");
                 });
 
@@ -98,6 +89,9 @@ namespace ITCoursesWeb.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CourseId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -110,45 +104,24 @@ namespace ITCoursesWeb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PersonType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PersonType")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("GroupId");
 
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("CoursePerson", b =>
-                {
-                    b.HasOne("ITCoursesWeb.Models.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ITCoursesWeb.Models.Person", null)
-                        .WithMany()
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ITCoursesWeb.Models.Course", b =>
                 {
-                    b.HasOne("ITCoursesWeb.Models.Person", "Teacher")
-                        .WithMany()
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.HasOne("ITCoursesWeb.Models.Person", null)
+                        .WithMany("Courses")
+                        .HasForeignKey("PersonId");
 
-                    b.Navigation("Teacher");
-                });
-
-            modelBuilder.Entity("ITCoursesWeb.Models.Group", b =>
-                {
                     b.HasOne("ITCoursesWeb.Models.Person", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
@@ -160,15 +133,29 @@ namespace ITCoursesWeb.Migrations
 
             modelBuilder.Entity("ITCoursesWeb.Models.Person", b =>
                 {
+                    b.HasOne("ITCoursesWeb.Models.Course", null)
+                        .WithMany("Persons")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("ITCoursesWeb.Models.Group", null)
                         .WithMany("Persons")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("GroupId");
+                });
+
+            modelBuilder.Entity("ITCoursesWeb.Models.Course", b =>
+                {
+                    b.Navigation("Persons");
                 });
 
             modelBuilder.Entity("ITCoursesWeb.Models.Group", b =>
                 {
                     b.Navigation("Persons");
+                });
+
+            modelBuilder.Entity("ITCoursesWeb.Models.Person", b =>
+                {
+                    b.Navigation("Courses");
                 });
 #pragma warning restore 612, 618
         }

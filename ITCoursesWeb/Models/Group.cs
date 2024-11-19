@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public int TeacherId { get; set; }
+        public Person Teacher { get; set; }
         public ICollection<Person> Persons { get; set; } = new HashSet<Person>();
     }
 }
