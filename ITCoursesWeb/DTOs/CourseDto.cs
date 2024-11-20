@@ -6,6 +6,6 @@
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string PathToImg { get; set; } = null!;
-        public int TeacherId { get; set; }
+        public string TeacherName { get; set; }
     }
 }

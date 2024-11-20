@@ -1,0 +1,27 @@
+﻿<div class="course-details">
+    <h4>Course Details</h4>
+    <table border="1" style="width:80%; text-align: left;">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Teacher</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ course.id }}</td>
+                <td>
+                    <img ng-src="{{course.pathToImg}}"
+                         alt="{{course.name}}"
+                         style="width: 100px; height: auto;" />
+                </td>
+                <td>{{ course.name }}</td>
+                <td>{{ course.description }}</td>
+                <td>{{ course.teacherName }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

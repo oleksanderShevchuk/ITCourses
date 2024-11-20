@@ -33,7 +33,7 @@ namespace ITCoursesWeb.Services
                 Name = course.Name,
                 Description = course.Description,
                 PathToImg = course.PathToImg,
-                TeacherId = course.TeacherId
+                TeacherName = course.Teacher.Name,
             };
         }
 
@@ -56,7 +56,7 @@ namespace ITCoursesWeb.Services
                 Name = course.Name,
                 Description = course.Description,
                 PathToImg = course.PathToImg,
-                TeacherId = course.TeacherId
+                TeacherName = course.Teacher.Name,
             };
         }
 
@@ -81,7 +81,7 @@ namespace ITCoursesWeb.Services
                     Name = c.Name,
                     Description = c.Description,
                     PathToImg = c.PathToImg,
-                    TeacherId = c.TeacherId
+                    TeacherName = c.Teacher.Name
                 })
                 .ToListAsync();
         }
@@ -91,6 +91,7 @@ namespace ITCoursesWeb.Services
             var course = await _context.Courses.FindAsync(id);
             if (course == null)
                 return null!;
+            var teacher = await _context.Persons.FirstOrDefaultAsync(t => t.Id == course.TeacherId);
 
             return new CourseDto
             {
@@ -98,7 +99,7 @@ namespace ITCoursesWeb.Services
                 Name = course.Name,
                 Description = course.Description,
                 PathToImg = course.PathToImg,
-                TeacherId = course.TeacherId
+                TeacherName = teacher?.Name ?? "Unknown",
             };
         }
     }

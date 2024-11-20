@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="ITCoursesApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular-route.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/courseController.js"></script>
+    <script src="js/mainGrid.js"></script>
+    <script src="js/detailsGrid.js"></script>
+</head>
+<body>
+    <div ng-controller="courseController">
+        <h1>Courses</h1>
+
+        <main-grid on-select-course="selectCourse(course)"></main-grid>
+        <details-grid></details-grid>
+    </div>
+</body>
+
+</html>
