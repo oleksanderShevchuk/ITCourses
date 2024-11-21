@@ -1,4 +1,4 @@
-﻿<div class="course-details">
+﻿<div class="course-details" ng-controller="courseController">
     <h4>Course Details</h4>
     <table border="1" style="width:80%; text-align: left;">
         <thead>
@@ -24,4 +24,11 @@
             </tr>
         </tbody>
     </table>
+
+    <button ng-click="editCourse(course)">Edit Course</button>
+    <button ng-click="confirmDelete(course)">Delete Course</button>
+
+    <div ng-if="showEditCourseForm">
+        <div ng-include="'views/editCourse.html'"></div>
+    </div>
 </div>

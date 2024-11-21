@@ -3,6 +3,7 @@
     public class Group
     {
         public int Id { get; set; }
+        public string Name { get; set; } = null!;
         public int TeacherId { get; set; }
         public Person Teacher { get; set; } = null!;
         public ICollection<Person> Persons { get; set; } = new HashSet<Person>();

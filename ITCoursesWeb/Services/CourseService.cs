@@ -15,12 +15,14 @@ namespace ITCoursesWeb.Services
 
         public async Task<CourseDto> AddAsync(CreateCourseDto createCourseDto)
         {
+            var teacher = await _context.Persons.FirstOrDefaultAsync(t => t.Name == createCourseDto.TeacherName);
             var course = new Course
             {
                 Name = createCourseDto.Name,
                 Description = createCourseDto.Description,
                 PathToImg = createCourseDto.PathToImg,
-                TeacherId = createCourseDto.TeacherId,
+                Teacher = teacher!,
+                TeacherId = teacher!.Id,
                 UpdatedAt = DateTime.UtcNow
             };
 
@@ -33,7 +35,7 @@ namespace ITCoursesWeb.Services
                 Name = course.Name,
                 Description = course.Description,
                 PathToImg = course.PathToImg,
-                TeacherName = course.Teacher.Name,
+                TeacherName = course.Teacher.Name ?? null!,
             };
         }
 
@@ -49,6 +51,7 @@ namespace ITCoursesWeb.Services
             course.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
+            var teacher = await _context.Persons.FirstOrDefaultAsync(t => t.Id == course.TeacherId);
 
             return new CourseDto
             {
@@ -56,7 +59,7 @@ namespace ITCoursesWeb.Services
                 Name = course.Name,
                 Description = course.Description,
                 PathToImg = course.PathToImg,
-                TeacherName = course.Teacher.Name,
+                TeacherName = teacher?.Name ?? course?.Teacher?.Name!,
             };
         }
 

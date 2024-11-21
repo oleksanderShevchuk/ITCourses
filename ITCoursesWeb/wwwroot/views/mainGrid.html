@@ -1,4 +1,10 @@
 ﻿<div class="course-list">
+    <button ng-click="showAddCourseForm = !showAddCourseForm">
+        Add New Course
+    </button>
+    <div ng-if="showAddCourseForm">
+        <div ng-include="'views/addCourse.html'"></div>
+    </div>
     <table border="1" style="width:80%; text-align: left;">
         <thead>
             <tr>
@@ -15,7 +21,7 @@
                 <td>
                     <img ng-src="{{course.pathToImg}}"
                          alt="{{course.name}}"
-                         style="width: 100px; height: auto;" />
+                         style="width: 100px; height: 100px;" />
                 </td>
                 <td>{{ course.name }}</td>
                 <td>{{ course.description }}</td>
