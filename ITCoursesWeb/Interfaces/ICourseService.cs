@@ -5,9 +5,9 @@ namespace ITCoursesWeb.Interfaces
     public interface ICourseService
     {
         Task<CourseDto> AddAsync(CreateCourseDto createCourseDto);
-        Task<CourseDto> EditAsync(int id, UpdateCourseDto updateCourseDto);
-        Task<bool> DeleteAsync(int id);
+        Task<CourseDto> EditAsync(string id, UpdateCourseDto updateCourseDto);
+        Task<bool> DeleteAsync(string id);
         Task<IEnumerable<CourseDto>> GetAllAsync();
-        Task<CourseDto> GetByIdAsync(int id);
+        Task<CourseDto> GetByIdAsync(string id);
     }
 }

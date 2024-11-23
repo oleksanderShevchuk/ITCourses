@@ -1,32 +1,75 @@
-﻿<div class="course-list">
-    <button ng-click="showAddCourseForm = !showAddCourseForm">
-        Add New Course
-    </button>
-    <div ng-if="showAddCourseForm">
-        <div ng-include="'views/addCourse.html'"></div>
-    </div>
-    <table border="1" style="width:80%; text-align: left;">
+﻿<div ng-controller="courseController">
+    <table border="1" style="width: 100%; text-align: left; table-layout: fixed;">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Teacher</th>
+                <th style="width: 10%; text-align: center;">Id</th>
+                <th style="width: 15%; text-align: center;">Image</th>
+                <th style="width: 15%; text-align: center;">Name</th>
+                <th style="width: 45%; text-align: center;">Description</th>
+                <th style="width: 15%; text-align: center;">Teacher</th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="course in courses" ng-click="selectCourse(course)">
-                <td>{{ course.id }}</td>
-                <td>
-                    <img ng-src="{{course.pathToImg}}"
-                         alt="{{course.name}}"
-                         style="width: 100px; height: 100px;" />
+            <tr ng-repeat="course in courses">
+                <td style="text-align: center;" ng-click="selectCourse(course)">{{ course.id }}</td>
+                <td style="text-align: center;">
+                    <input ng-if="course.isEditing && course === selectedCourse" type="text" ng-model="course.ImgUrl" />
+                    <img ng-if="!course.isEditing" ng-src="{{ course.ImgUrl }}" alt="{{ course.name }}" style="width: 100px; height: auto;" />
                 </td>
-                <td>{{ course.name }}</td>
-                <td>{{ course.description }}</td>
-                <td>{{ course.teacherName }}</td>
+                <td style="text-align: center;">
+                    <input ng-if="course.isEditing && course === selectedCourse" type="text" ng-model="course.name" />
+                    <span ng-if="!course.isEditing">{{ course.name }}</span>
+                </td>
+                <td style="text-align: left;">
+                    <textarea ng-if="course.isEditing && course === selectedCourse" ng-model="course.description" style="width: 100%;"></textarea>
+                    <span ng-if="!course.isEditing">{{ course.description }}</span>
+                </td>
+                <td style="text-align: center;">
+                    <input ng-if="course.isEditing && course === selectedCourse" type="text" ng-model="course.teacherName" />
+                    <span ng-if="!course.isEditing">{{ course.teacherName }}</span>
+                </td>
+            </tr>
+            <!-- Row for adding a new course -->
+            <tr ng-if="addingNewCourse">
+                <td style="text-align: center;">Id</td>
+                <td style="text-align: center;">
+                    <input type="text" ng-model="newCourse.imgUrl" placeholder="Enter path to course img" />
+                </td>
+                <td style="text-align: center;">
+                    <input type="text" ng-model="newCourse.name" placeholder="Enter course name" />
+                </td>
+                <td style="text-align: left;">
+                    <textarea ng-model="newCourse.description" placeholder="Enter course description" style="width: 100%;"></textarea>
+                </td>
+                <td style="text-align: center;">
+                    <input type="text" ng-model="newCourse.teacherName" placeholder="Enter teacher name" />
+                </td>
             </tr>
         </tbody>
     </table>
+    <div>
+        <button ng-if="!addingNewCourse" ng-click="toggleAddNewCourse()">Add</button>
+        <button ng-if="selectedCourse && !selectedCourse.isEditing" ng-click="editCourse(selectedCourse); $event.stopPropagation();">Edit</button>
+        <button ng-click="confirmDelete(selectedCourse)">Delete Course</button>
+        <button ng-if="addingNewCourse" ng-click="createNewCourse()">Create</button>
+        <button ng-if="addingNewCourse" ng-click="cancelNewCourse()">Cancel</button>
+        <button ng-if="selectedCourse && selectedCourse.isEditing" ng-click="saveCourse(selectedCourse); $event.stopPropagation();">Save</button>
+        <button ng-if="selectedCourse && selectedCourse.isEditing" ng-click="cancelEdit(selectedCourse); $event.stopPropagation();">Cancel</button>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination-controls" style="text-align: center; margin-top: 10px;">
+        <button ng-click="prevPage()" ng-disabled="currentPage === 1">&lt;</button>
+
+        <span ng-repeat="page in getPageNumbers() track by $index">
+            <button ng-click="setPage(page)"
+                    ng-disabled="page === '...' || page === currentPage"
+                    ng-class="{ 'active-page': page === currentPage }">
+                {{ page }}
+            </button>
+        </span>
+
+        <button ng-click="nextPage()" ng-disabled="currentPage === totalPages">&gt;</button>
+    </div>
+
 </div>

@@ -1,34 +1,29 @@
 ﻿<div class="course-details" ng-controller="courseController">
     <h4>Course Details</h4>
-    <table border="1" style="width:80%; text-align: left;">
+    <table border="1" style="width:100%; text-align: left;">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Teacher</th>
+                <th style="width: 10%; text-align: center;">Id</th>
+                <th style="width: 15%; text-align: center;">Image</th>
+                <th style="width: 15%; text-align: center;">Name</th>
+                <th style="width: 50%; text-align: center;">Description</th>
+                <th style="width: 10%; text-align: center;">Teacher</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>{{ course.id }}</td>
-                <td>
-                    <img ng-src="{{course.pathToImg}}"
-                         alt="{{course.name}}"
+                <td text-align: center;>{{ course.id }}</td>
+                <td text-align: center;>
+                    <img ng-src="{{ course.pathToImg }}"
+                         alt="{{ course.name }}"
                          style="width: 100px; height: auto;" />
                 </td>
-                <td>{{ course.name }}</td>
-                <td>{{ course.description }}</td>
-                <td>{{ course.teacherName }}</td>
+                <td text-align: center;>{{ course.name }}</td>
+                <td style="word-wrap: break-word; word-break: break-word; white-space: normal; text-align: left;">{{ course.description }}</td>
+                <td text-align: center;>{{ course.teacherName }}</td>
             </tr>
         </tbody>
     </table>
 
-    <button ng-click="editCourse(course)">Edit Course</button>
-    <button ng-click="confirmDelete(course)">Delete Course</button>
-
-    <div ng-if="showEditCourseForm">
-        <div ng-include="'views/editCourse.html'"></div>
-    </div>
+    
 </div>

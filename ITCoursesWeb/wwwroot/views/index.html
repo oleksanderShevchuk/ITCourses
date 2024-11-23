@@ -15,7 +15,10 @@
     <div ng-controller="courseController">
         <h1>Courses</h1>
 
-        <main-grid on-select-course="selectCourse(course)"></main-grid>
+        <main-grid courses="courses"
+                   selected-course="selectedCourse"
+                   on-save-course="saveCourse(course)">
+        </main-grid>
         <details-grid></details-grid>
     </div>
 </body>

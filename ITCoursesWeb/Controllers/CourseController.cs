@@ -26,7 +26,7 @@ namespace ITCoursesWeb.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditCourse(int id, [FromBody] UpdateCourseDto updateCourseDto)
+        public async Task<IActionResult> EditCourse(string id, [FromBody] UpdateCourseDto updateCourseDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -39,7 +39,7 @@ namespace ITCoursesWeb.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCourse(int id)
+        public async Task<IActionResult> DeleteCourse(string id)
         {
             var success = await _courseService.DeleteAsync(id);
             if (!success)
@@ -51,12 +51,13 @@ namespace ITCoursesWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllCourses()
         {
+            
             var courses = await _courseService.GetAllAsync();
             return Ok(courses);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCourseById(int id)
+        public async Task<IActionResult> GetCourseById(string id)
         {
             var course = await _courseService.GetByIdAsync(id);
             if (course == null)

@@ -11,6 +11,8 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(conn
 
 builder.Services.AddScoped<ICourseService, CourseService>();
 
+builder.Services.AddSignalR();
+
 // Add CORS support
 builder.Services.AddCors(options =>
 {

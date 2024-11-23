@@ -2,16 +2,28 @@
     return {
         restrict: 'E',
         scope: {
-            onSelectCourse: '&' 
+            courses: '=',         
+            selectedCourse: '=',  
+            onSaveCourse: '&',  
         },
         templateUrl: 'views/mainGrid.html',
         link: function (scope) {
-            scope.$on('coursesUpdated', function (event, courses) {
-                scope.courses = courses;
-            });
-
             scope.selectCourse = function (course) {
-                scope.onSelectCourse({ course: course });
+                scope.courses.forEach(c => c.isEditing = false);
+                scope.selectedCourse = course;
+            };
+
+            scope.editCourse = function (course) {
+                course.isEditing = true;
+            };
+
+            scope.saveCourse = function (course) {
+                course.isEditing = false;
+                scope.onSaveCourse({ course: course });
+            };
+
+            scope.cancelEdit = function (course) {
+                course.isEditing = false;
             };
         }
     };
