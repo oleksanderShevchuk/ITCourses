@@ -12,7 +12,7 @@ namespace ITCoursesWeb.Models
         public DateTime UpdatedAt { get; set; }
         public string ImgUrl { get; set; } = null!;
 
-        public string TeacherId { get; set; }
+        public string TeacherId { get; set; } = null!;
         public Person Teacher { get; set; } = null!;
         public ICollection<Person> Persons { get; set; } = new HashSet<Person>();
         public int Price { get; set; }  

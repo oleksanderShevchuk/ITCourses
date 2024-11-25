@@ -2,11 +2,12 @@
     <table border="1" style="width: 100%; text-align: left; table-layout: fixed;">
         <thead>
             <tr>
-                <th style="width: 10%; text-align: center;">Id</th>
+                <th style="width: 5%; text-align: center;">Id</th>
                 <th style="width: 15%; text-align: center;">Image</th>
                 <th style="width: 15%; text-align: center;">Name</th>
                 <th style="width: 45%; text-align: center;">Description</th>
                 <th style="width: 15%; text-align: center;">Teacher</th>
+                <th style="width: 10%; text-align: center;">Price</th>
             </tr>
         </thead>
         <tbody>
@@ -25,8 +26,12 @@
                     <span ng-if="!course.isEditing">{{ course.description }}</span>
                 </td>
                 <td style="text-align: center;">
-                    <input ng-if="course.isEditing && course === selectedCourse" type="text" ng-model="course.teacherName" />
+                    <input ng-if="course.isEditing && course === selectedCourse" type="text" ng-model="course.teacherEmail" />
                     <span ng-if="!course.isEditing">{{ course.teacherName }}</span>
+                </td>
+                <td style="text-align: center;">
+                    <input ng-if="course.isEditing && course === selectedCourse" type="text" ng-model="course.price" />
+                    <span ng-if="!course.isEditing">{{ course.price }}</span>
                 </td>
             </tr>
             <!-- Row for adding a new course -->
@@ -42,7 +47,10 @@
                     <textarea ng-model="newCourse.description" placeholder="Enter course description" style="width: 100%;"></textarea>
                 </td>
                 <td style="text-align: center;">
-                    <input type="text" ng-model="newCourse.teacherName" placeholder="Enter teacher name" />
+                    <input type="text" ng-model="newCourse.teacherName" placeholder="Enter teacher email" />
+                </td>
+                <td style="text-align: center;">
+                    <input type="text" ng-model="newCourse.price" placeholder="Enter price" />
                 </td>
             </tr>
         </tbody>

@@ -52,3 +52,26 @@ button.active-page {
     background-color: #f0f8ff; /* Light blue */
     font-weight: bold;
 }
+
+button.active {
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: 1px solid #007bff;
+    color: #007bff;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+    color: white;
+}

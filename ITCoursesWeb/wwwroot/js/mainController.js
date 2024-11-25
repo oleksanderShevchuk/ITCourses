@@ -1,4 +1,4 @@
-﻿app.controller('mainController', function ($scope, $http) {
+﻿app.controller('mainController', function ($scope, $http, $rootScope) {
     var baseUrl = '/api/course';
     $scope.courses = [];
     $scope.allCourses = [];
@@ -91,8 +91,11 @@
         course.isEditing = false;
         $scope.addingNewCourse = false;
         $scope.selectedCourse = course; 
+        $rootScope.teacherEmail = course.teacherEmail;
+        $rootScope.courseId = course.id;
     };
 
+    // Edit Course
     $scope.editCourse = function (course) {
         course.isEditing = true;
         course.original = angular.copy(course);

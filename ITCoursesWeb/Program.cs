@@ -10,6 +10,8 @@ var connectionString = builder.Configuration.GetConnectionString("AppDbContextCo
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<IPromoCodeService, PromoCodeService>();
 
 builder.Services.AddSignalR();
 
