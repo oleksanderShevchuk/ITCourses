@@ -1,4 +1,4 @@
-﻿<div ng-controller="courseController">
+﻿<div ng-controller="mainController">
     <table border="1" style="width: 100%; text-align: left; table-layout: fixed;">
         <thead>
             <tr>
@@ -10,7 +10,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="course in courses">
+            <tr ng-repeat="course in courses" ng-class="{'highlighted-course': course === selectedCourse}" >
                 <td style="text-align: center;" ng-click="selectCourse(course)">{{ course.id }}</td>
                 <td style="text-align: center;">
                     <input ng-if="course.isEditing && course === selectedCourse" type="text" ng-model="course.ImgUrl" />
@@ -47,16 +47,6 @@
             </tr>
         </tbody>
     </table>
-    <div>
-        <button ng-if="!addingNewCourse" ng-click="toggleAddNewCourse()">Add</button>
-        <button ng-if="selectedCourse && !selectedCourse.isEditing" ng-click="editCourse(selectedCourse); $event.stopPropagation();">Edit</button>
-        <button ng-click="confirmDelete(selectedCourse)">Delete Course</button>
-        <button ng-if="addingNewCourse" ng-click="createNewCourse()">Create</button>
-        <button ng-if="addingNewCourse" ng-click="cancelNewCourse()">Cancel</button>
-        <button ng-if="selectedCourse && selectedCourse.isEditing" ng-click="saveCourse(selectedCourse); $event.stopPropagation();">Save</button>
-        <button ng-if="selectedCourse && selectedCourse.isEditing" ng-click="cancelEdit(selectedCourse); $event.stopPropagation();">Cancel</button>
-    </div>
-
     <!-- Pagination Controls -->
     <div class="pagination-controls" style="text-align: center; margin-top: 10px;">
         <button ng-click="prevPage()" ng-disabled="currentPage === 1">&lt;</button>
@@ -70,6 +60,16 @@
         </span>
 
         <button ng-click="nextPage()" ng-disabled="currentPage === totalPages">&gt;</button>
+    </div>
+
+    <div>
+        <button ng-if="!addingNewCourse" ng-click="toggleAddNewCourse()">Add</button>
+        <button ng-if="selectedCourse && !selectedCourse.isEditing" ng-click="editCourse(selectedCourse); $event.stopPropagation();">Edit</button>
+        <button ng-click="confirmDelete(selectedCourse)">Delete Course</button>
+        <button ng-if="addingNewCourse" ng-click="createNewCourse()">Create</button>
+        <button ng-if="addingNewCourse" ng-click="cancelNewCourse()">Cancel</button>
+        <button ng-if="selectedCourse && selectedCourse.isEditing" ng-click="saveCourse(selectedCourse); $event.stopPropagation();">Save</button>
+        <button ng-if="selectedCourse && selectedCourse.isEditing" ng-click="cancelEdit(selectedCourse); $event.stopPropagation();">Cancel</button>
     </div>
 
 </div>

@@ -1,4 +1,4 @@
-﻿<div class="course-details" ng-controller="courseController">
+﻿<div class="course-details" ng-controller="mainController">
     <h4>Course Details</h4>
     <table border="1" style="width:100%; text-align: left;">
         <thead>
@@ -12,7 +12,7 @@
         </thead>
         <tbody>
             <tr>
-                <td text-align: center;>{{ course.id }}</td>
+                <td text-align: center;>{{ selectedCourse.id }}</td>
                 <td text-align: center;>
                     <img ng-src="{{ course.pathToImg }}"
                          alt="{{ course.name }}"

@@ -1,4 +1,4 @@
-﻿app.controller('courseController', function ($scope, $http) {
+﻿app.controller('mainController', function ($scope, $http) {
     var baseUrl = '/api/course';
     $scope.courses = [];
     $scope.allCourses = [];
@@ -7,7 +7,7 @@
     $scope.showAddCourseForm = false;
     $scope.showEditCourseForm = false; 
     $scope.currentPage = 1;
-    $scope.pageSize = 2;
+    $scope.pageSize = 3;
     $scope.totalPages = 1; 
     $scope.addingNewCourse = false;
 
@@ -33,31 +33,37 @@
 
     // Generate page numbers for pagination
     $scope.getPageNumbers = function () {
-        const maxPagesToShow = 5; 
         const pages = [];
 
-        if ($scope.totalPages > maxPagesToShow && $scope.currentPage > Math.ceil(maxPagesToShow / 2)) {
-            pages.push(1, '...');
+        pages.push(1);
+
+        const startPage = Math.max(2, $scope.currentPage - 1);
+        const endPage = Math.min($scope.totalPages - 1, $scope.currentPage + 1);
+
+        if (startPage > 2) {
+            pages.push('...');
         }
 
-        const startPage = Math.max(1, $scope.currentPage - 2);
-        const endPage = Math.min($scope.totalPages, $scope.currentPage + 2);
         for (let i = startPage; i <= endPage; i++) {
             pages.push(i);
         }
 
-        if ($scope.totalPages > maxPagesToShow && $scope.currentPage < $scope.totalPages - Math.floor(maxPagesToShow / 2)) {
-            pages.push('...', $scope.totalPages);
+        if (endPage < $scope.totalPages - 1) {
+            pages.push('...');
         }
 
+        if ($scope.totalPages > 1) {
+            pages.push($scope.totalPages);
+        }
         return pages;
     };
+
 
     // Go to the next page
     $scope.nextPage = function () {
         if ($scope.currentPage * $scope.pageSize < $scope.allCourses.length) {
             $scope.currentPage++;
-            $scope.updatePaginatedCourses();
+            $scope.updateCoursesForPage();
         }
     };
 
@@ -65,7 +71,7 @@
     $scope.prevPage = function () {
         if ($scope.currentPage > 1) {
             $scope.currentPage--;
-            $scope.updatePaginatedCourses();
+            $scope.updateCoursesForPage();
         }
     };
 
@@ -78,9 +84,13 @@
 
     // Select a course and broadcast grid change
     $scope.selectCourse = function (course) {
+       if (course.isEditing && course.original) {
+            angular.copy(course.original, course);
+            delete course.original;
+        }
         course.isEditing = false;
         $scope.addingNewCourse = false;
-        $scope.selectedCourse = course;
+        $scope.selectedCourse = course; 
     };
 
     $scope.editCourse = function (course) {
@@ -90,10 +100,12 @@
 
     // Cancel the editing and revert changes
     $scope.cancelEdit = function (course) {
-        angular.copy(course.original, course);
+        if (course.original) {
+            angular.copy(course.original, course);
+            delete course.original;
+        }
         course.isEditing = false; 
-        delete course.original; 
-    };
+    };  
 
     // Save course changes
     $scope.saveCourse = function (course) {
