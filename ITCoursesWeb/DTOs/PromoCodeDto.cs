@@ -6,10 +6,9 @@ namespace ITCoursesWeb.DTOs
     {
         public string Id { get; set; }
         public string Code { get; set; }
-        public string PersonId { get; set; }
-        public string PersonName { get; set; }
-        public string IsUsed { get; set; }
-        public string Percent { get; set; } = null!;
+        public string PersonEmail { get; set; }
+        public bool IsUsed { get; set; }
+        public int Percent { get; set; } 
         public DateTime DateTo { get; set; }
         public string CourseId { get; set; } = null!;
     }

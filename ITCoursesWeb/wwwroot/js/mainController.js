@@ -3,7 +3,7 @@
     $scope.courses = [];
     $scope.allCourses = [];
     $scope.selectedCourse = null;
-    $scope.newCourse = { name: '', description: '', teacherName: '', pathToImg: '' };
+    $scope.newCourse = { name: '', description: '', teacherEmail: '', imgUrl: '' };
     $scope.showAddCourseForm = false;
     $scope.showEditCourseForm = false; 
     $scope.currentPage = 1;
@@ -155,7 +155,7 @@
     // Toggle the "Add New Course" form
     $scope.toggleAddNewCourse = function () {
         $scope.addingNewCourse = true;
-        $scope.newCourse = { name: '', description: '', teacherName: '', pathToImg: '' };
+        $scope.newCourse = { name: '', description: '', teacherEmail: '', imgUrl: '' };
     };
 
     // Cancel the "Add New Course" form
@@ -166,7 +166,7 @@
 
     // Create a new course
     $scope.createNewCourse = function () {
-        if (!$scope.newCourse.name || !$scope.newCourse.description || !$scope.newCourse.teacherName) {
+        if (!$scope.newCourse.name || !$scope.newCourse.description || !$scope.newCourse.teacherEmail) {
             alert('Please fill out all fields before creating a course.');
             return;
         }

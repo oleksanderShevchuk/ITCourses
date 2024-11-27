@@ -1,4 +1,5 @@
-﻿using ITCoursesWeb.Interfaces;
+﻿using ITCoursesWeb.DTOs;
+using ITCoursesWeb.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITCoursesWeb.Controllers
@@ -22,6 +23,39 @@ namespace ITCoursesWeb.Controllers
                 return NotFound();
 
             return Ok(promoCodes);
+        }
+
+        [HttpPost("{courseId}")]
+        public async Task<IActionResult> AddPromoCode(string courseId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _promoCodeService.AddAsync(courseId);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditCourse(string id, [FromBody] UpdatePromoCodeDto updatePromoCodeDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _promoCodeService.EditAsync(id, updatePromoCodeDto);
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCourse(string id)
+        {
+            var success = await _promoCodeService.DeleteAsync(id);
+            if (!success)
+                return NotFound();
+
+            return NoContent();
         }
     }
 }

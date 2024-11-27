@@ -6,7 +6,6 @@
         public string Description { get; set; } = null!;
         public string ImgUrl { get; set; } = null!;
         public string TeacherEmail { get; set; } = null!;
-        public string TeacherName { get; set; } = null!;
         public int Price { get; set; }
     }
 }

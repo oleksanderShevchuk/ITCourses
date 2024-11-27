@@ -19,7 +19,7 @@ namespace ITCoursesWeb.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PersonType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AboutMe = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    AboutMe = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -31,12 +31,13 @@ namespace ITCoursesWeb.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Number = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TeacherId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TeacherId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Price = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -56,11 +57,11 @@ namespace ITCoursesWeb.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PersonId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IsUsed = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Percent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PersonId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
+                    Percent = table.Column<int>(type: "int", nullable: false),
                     DateTo = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CourseId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CourseId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PersonId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>

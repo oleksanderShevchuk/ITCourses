@@ -50,18 +50,19 @@ namespace ITCoursesWeb.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImgUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Number")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
                     b.Property<string>("TeacherId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -80,7 +81,6 @@ namespace ITCoursesWeb.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AboutMe")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -129,22 +129,18 @@ namespace ITCoursesWeb.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CourseId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateTo")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("IsUsed")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("Percent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Percent")
+                        .HasColumnType("int");
 
                     b.Property<string>("PersonId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PersonId1")
@@ -179,8 +175,7 @@ namespace ITCoursesWeb.Migrations
                     b.HasOne("ITCoursesWeb.Models.Person", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Teacher");
                 });
@@ -209,8 +204,7 @@ namespace ITCoursesWeb.Migrations
                     b.HasOne("ITCoursesWeb.Models.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ITCoursesWeb.Models.Person", null)
                         .WithMany("PromoCodes")

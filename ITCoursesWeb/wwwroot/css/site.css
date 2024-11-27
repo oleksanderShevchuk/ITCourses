@@ -1,77 +1,123 @@
+/* General Styling */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    color: #212529;
 }
 
-.pagination-controls button {
-    margin: 0 5px;
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-    cursor: pointer;
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 5px 0;
+    background-color: #fff;
 }
 
-.pagination-controls button.active-page {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
-}
+    table thead th {
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        padding: 10px;
+    }
 
-.pagination-controls button:disabled {
-    background-color: #e9ecef;
-    color: #6c757d;
-    cursor: not-allowed;
-}
+    table tbody td {
+        padding: 5px;
+        border: 1px solid #dee2e6;
+    }
 
-button.active-page {
-    font-weight: bold;
-    background-color: #007bff;
-    color: white;
-    border-radius: 4px;
-}
+    table tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    table tbody tr:hover {
+        background-color: #e9ecef;
+    }
 
 .highlighted-course {
-    background-color: #f0f8ff; /* Light blue */
+    background-color: #d1ecf1;
     font-weight: bold;
 }
 
-button.active {
-    background-color: #007bff;
-    color: white;
-    border-radius: 4px;
-    font-weight: bold;
-}
-
+/* Button Styling */
 button {
-    padding: 10px 20px;
-    margin: 5px;
+    padding: 5px 10px;
+    margin: 10px;
+    font-size: 14px;
     border: 1px solid #007bff;
+    border-radius: 10px;
     color: #007bff;
     background-color: white;
     cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-button:hover {
-    background-color: #0056b3;
-    color: white;
+    button:hover {
+        background-color: #0056b3;
+        color: white;
+    }
+
+    button.active {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+    }
+
+/* Add Promo Code Form */
+div.ng-show {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #007bff;
+    border-radius: 5px;
 }
+
+    div.ng-show input {
+        padding: 8px;
+        margin: 5px;
+        border: 1px solid #007bff;
+        border-radius: 4px;
+    }
+
+    div.ng-show button {
+        margin-top: 10px;
+    }
+
+/* Pagination Styling */
+.pagination-controls {
+    text-align: center;
+    margin-top: 5px;
+}
+
+    .pagination-controls button {
+        padding: 3px 10px;
+        margin: 3px;
+        border: 1px solid #007bff;
+        background-color: white;
+        color: #007bff;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+        .pagination-controls button.active-page,
+        .pagination-controls button:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .pagination-controls button:disabled {
+            background-color: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
