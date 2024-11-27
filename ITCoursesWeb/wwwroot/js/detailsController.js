@@ -146,6 +146,16 @@
         }
     };
 
+    // Function to reset the view
+    $scope.resetView = function () {
+        $scope.currentView = '';
+    };
+
+    // Listen for reset event
+    $scope.$on('resetView', function () {
+        $scope.resetView();
+    });
+
     // Initialize with the default view
     $scope.switchView($scope.currentView);
 });

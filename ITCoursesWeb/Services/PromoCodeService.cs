@@ -4,6 +4,7 @@ using ITCoursesWeb.DTOs;
 using ITCoursesWeb.Interfaces;
 using ITCoursesWeb.Models;
 using System.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITCoursesWeb.Services
 {
@@ -64,15 +65,16 @@ namespace ITCoursesWeb.Services
             if (promoCode == null)
                 return null!;
 
-            promoCode.IsUsed = updatePromoCodeDto.IsUsed;
+            promoCode.IsUsed = Convert.ToBoolean(updatePromoCodeDto.IsUsed);
             promoCode.Percent = updatePromoCodeDto.Percent;
             promoCode.DateTo = updatePromoCodeDto.DateTo;
 
-            var person = await _context.Persons.FindAsync(updatePromoCodeDto.PersonEmail);
+            var person = await _context.Persons.FirstOrDefaultAsync(p => p.Email == updatePromoCodeDto.PersonEmail);
             if (person != null)
             {
                 promoCode.Person = person;
                 promoCode.PersonId = person.Id;
+                person.PromoCodes.Add(promoCode);
             }
 
             await _context.SaveChangesAsync();

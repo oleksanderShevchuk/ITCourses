@@ -10,6 +10,8 @@
     $scope.pageSize = 3;
     $scope.totalPages = 1; 
     $scope.addingNewCourse = false;
+    $scope.detailsVisible = false;
+
 
     // Fetch all courses and broadcast updates
     $scope.getAllCourses = function () {
@@ -84,6 +86,9 @@
 
     // Select a course and broadcast grid change
     $scope.selectCourse = function (course) {
+        if ($scope.selectedCourse !== null)
+            if (!$scope.selectedCourse.isSelect)
+                return;
        if (course.isEditing && course.original) {
             angular.copy(course.original, course);
             delete course.original;
@@ -93,10 +98,15 @@
         $scope.selectedCourse = course; 
         $rootScope.teacherEmail = course.teacherEmail;
         $rootScope.courseId = course.id;
+        $scope.selectedCourse.isSelect = true;
+
+        $scope.detailsVisible = true;
+        $rootScope.$broadcast('resetView');
     };
 
     // Edit Course
     $scope.editCourse = function (course) {
+        $scope.selectedCourse.isSelect = false;
         course.isEditing = true;
         course.original = angular.copy(course);
     };
@@ -108,6 +118,7 @@
             delete course.original;
         }
         course.isEditing = false; 
+        $scope.selectedCourse.isSelect = true;
     };  
 
     // Save course changes
@@ -119,6 +130,7 @@
                     $scope.courses[index] = response.data;
                 }
                 course.isEditing = false; 
+                $scope.selectedCourse.isSelect = true;
             })
             .catch(function (error) {
                 console.error('Error saving course:', error);

@@ -6,7 +6,7 @@ namespace ITCoursesWeb.DTOs
     {
         public string? PersonEmail { get; set; }
 
-        public bool IsUsed { get; set; }
+        public string? IsUsed { get; set; }
         public int Percent { get; set; } 
         public DateTime DateTo { get; set; }
     }

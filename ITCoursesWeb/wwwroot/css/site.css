@@ -21,7 +21,7 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 5px 0;
+    margin: 4px 0;
     background-color: #fff;
 }
 
@@ -29,11 +29,11 @@ table {
         background-color: #007bff;
         color: white;
         text-align: center;
-        padding: 10px;
+        padding: 3px;
     }
 
     table tbody td {
-        padding: 5px;
+        padding: 2px;
         border: 1px solid #dee2e6;
     }
 
@@ -106,7 +106,7 @@ div.ng-show {
         border: 1px solid #007bff;
         background-color: white;
         color: #007bff;
-        border-radius: 3px;
+        border-radius: 5px;
         cursor: pointer;
     }
 
@@ -121,3 +121,39 @@ div.ng-show {
             color: #6c757d;
             cursor: not-allowed;
         }
+
+.scrollable-rows {
+    max-height: 165px;
+    overflow-y: auto;
+}
+
+    .scrollable-rows table {
+        border-spacing: 0;
+    }
+
+        .scrollable-rows table td {
+            padding: 2px;
+            border: 1px solid #ccc;
+        }
+
+    .scrollable-rows::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .scrollable-rows::-webkit-scrollbar-track {
+        background: #f0f0f0;
+    }
+
+    .scrollable-rows::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+        .scrollable-rows::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+.it-courses-header {
+    font-weight: bold;
+    color: #2c3e50; 
+    margin-left: 25px;
+}
