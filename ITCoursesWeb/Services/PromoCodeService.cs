@@ -5,15 +5,18 @@ using ITCoursesWeb.Interfaces;
 using ITCoursesWeb.Models;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
+using ITCoursesWeb.Repositories;
 
 namespace ITCoursesWeb.Services
 {
     public class PromoCodeService : IPromoCodeService
     {
         private readonly AppDbContext _context;
-        public PromoCodeService(AppDbContext context)
+        private readonly PromoCodeRepository _promoCodeRepository;
+        public PromoCodeService(AppDbContext context, PromoCodeRepository promoCodeRepository)
         {
             _context = context;
+            _promoCodeRepository = promoCodeRepository;
         }
         public IEnumerable<PromoCodeDto> GetAllByCourseId(string courseId)
         {
@@ -103,18 +106,41 @@ namespace ITCoursesWeb.Services
             return true;
         }
 
+        public void GeneratePromoCodes(int countPromoCodes, string courseId, DateTime dateTo, int discount)
+        {
+            try
+            {
+                _promoCodeRepository.GeneratePromoCodes(countPromoCodes, courseId, dateTo, discount);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("An error occurred while generating promo codes.", ex);
+            }
+        }
+
         private string GeneratePromoCode(int length = 15)
         {
-            var random = new Random();
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            StringBuilder promoCode = new StringBuilder();
+            string code;
+            bool codeExists;
 
-            for (int i = 0; i < length; i++)
+            do
             {
-                promoCode.Append(chars[random.Next(chars.Length)]);
-            }
+                var random = new Random();
+                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                StringBuilder promoCode = new StringBuilder();
 
-            return promoCode.ToString();
+                for (int i = 0; i < length; i++)
+                {
+                    promoCode.Append(chars[random.Next(chars.Length)]);
+                }
+
+                code = promoCode.ToString();
+
+                codeExists = _context.PromoCodes.Any(p => p.Code == code);
+            }
+            while (codeExists);
+
+            return code;
         }
     }
 }

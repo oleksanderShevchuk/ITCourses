@@ -57,5 +57,32 @@ namespace ITCoursesWeb.Controllers
 
             return NoContent();
         }
+
+        [HttpPost("generate")]
+        public IActionResult GeneratePromoCodes([FromBody] GeneratePromoCodesDto request)
+        {
+            if (request.Discount > 20)
+            {
+                request.Discount = 20;
+            }
+
+            try
+            {
+                _promoCodeService.GeneratePromoCodes(
+                    request.CountPromoCodes,
+                    request.CourseId,
+                    request.DateTo,
+                    request.Discount
+                );
+                if (request.CountPromoCodes == 1) 
+                    return Ok(new { message = "Promo code generated successfully." });
+                else
+                    return Ok(new { message = "Promo codes generated successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
     }
 }

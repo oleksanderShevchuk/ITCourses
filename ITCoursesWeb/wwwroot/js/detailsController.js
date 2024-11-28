@@ -2,8 +2,9 @@
     $scope.currentView = '';
     $scope.teacherInfo = {};
     $scope.promoCodes = []; 
-    $scope.newPromoCode = { code: '', discount: 0 };
     $scope.showAddPromoCodeForm = false; 
+    $scope.actions = false; 
+    $scope.generateInfo = {};
 
     // Function to fetch teacher details
     $scope.loadTeacherDetails = function () {
@@ -135,6 +136,28 @@
             });
     };
 
+    // Load generatePromoCodes
+    $scope.loadGeneratePromoCodes = function () {
+        $scope.actions = true; 
+    };
+
+    // Function to generate promo codes
+    $scope.generatePromoCodes = function (generateInfo) {
+        generateInfo.courseId = $rootScope.courseId;
+        if (!generateInfo.courseId) {
+            console.error('Course Id is missing!');
+            return; 
+        }
+        $http.post('/api/promocode/generate', generateInfo)
+            .then(function () {
+                $scope.actions = false;
+                $scope.currentView = '';
+            })
+            .catch(function (error) {
+                console.error('Error fetching promo codes:', error);
+            });
+    };
+
     // Function to switch views
     $scope.switchView = function (view) {
         $scope.currentView = view;
@@ -143,17 +166,20 @@
             $scope.loadTeacherDetails();
         } else if (view === 'promocodes') {
             $scope.loadPromoCodes();
+        } else if (view === 'generatePromoCodes') {
+            $scope.loadGeneratePromoCodes();
         }
-    };
-
-    // Function to reset the view
-    $scope.resetView = function () {
-        $scope.currentView = '';
     };
 
     // Listen for reset event
     $scope.$on('resetView', function () {
-        $scope.resetView();
+        $scope.actions = false;
+        $scope.currentView = '';
+    });
+
+    // Listen for goToActions event
+    $scope.$on('goToActions', function () {
+        $scope.actions = true; 
     });
 
     // Initialize with the default view

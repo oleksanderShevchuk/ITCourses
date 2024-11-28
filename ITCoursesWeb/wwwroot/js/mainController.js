@@ -10,7 +10,6 @@
     $scope.pageSize = 3;
     $scope.totalPages = 1; 
     $scope.addingNewCourse = false;
-    $scope.detailsVisible = false;
 
 
     // Fetch all courses and broadcast updates
@@ -100,7 +99,6 @@
         $rootScope.courseId = course.id;
         $scope.selectedCourse.isSelect = true;
 
-        $scope.detailsVisible = true;
         $rootScope.$broadcast('resetView');
     };
 
@@ -190,6 +188,11 @@
             console.error('Error creating new course:', error);
             alert('An error occurred while creating the course.');
         });
+    };
+
+    // 
+    $scope.goToActions = function () {
+        $rootScope.$broadcast('goToActions');
     };
 
     // Initialize by fetching courses

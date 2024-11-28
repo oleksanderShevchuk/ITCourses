@@ -1,8 +1,9 @@
 ﻿<div ng-controller="detailsController">
     <!-- Toggle Buttons -->
     <div style="margin: 5px 0 0 25px;">
-        <button ng-click="switchView('teacher')" ng-class="{ 'active': currentView === 'teacher' }">Teacher</button>
-        <button ng-click="switchView('promocodes')" ng-class="{ 'active': currentView === 'promocodes' }">PromoCodes</button>
+        <button ng-if="!actions" ng-click="switchView('teacher')" ng-class="{ 'active': currentView === 'teacher' }">Teacher</button>
+        <button ng-if="!actions" ng-click="switchView('promocodes')" ng-class="{ 'active': currentView === 'promocodes' }">PromoCodes</button>
+        <button ng-if="actions" ng-click="switchView('generatePromoCodes')" ng-class="{ 'active': currentView === 'generatePromoCodes' }">Generate promo codes</button>
     </div>
 
     <!-- Teacher Information -->
@@ -113,5 +114,31 @@
         <button ng-click="addPromoCode()">
             {{ showAddPromoCodeForm ? 'Hide Add Promo Code' : 'Add New Promo Code' }}
         </button>
+    </div>
+
+    <!-- Actions -->
+    <div ng-if="currentView === 'generatePromoCodes'" style="margin-left: 25px;">
+        <h3>Generate promo codes</h3>
+        <table border="1" style="border-color: #dee2e6; width: 100%; text-align: left; table-layout: fixed; ">
+            <tr>
+                <th style="width: 30%;">Count of generated promo codes</th>
+                <td style="width: 70%;">
+                    <input type="number" ng-model="generateInfo.countPromoCodes" style="width: 100%;">
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 30%;">Date to expired code</th>
+                <td>
+                    <input type="datetime-local" ng-model="generateInfo.dateTo">
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 30%;">Discount</th>
+                <td style="width: 70%;">
+                    <input type="number" ng-model="generateInfo.discount">
+                </td>
+            </tr>
+        </table>
+        <button ng-click="generatePromoCodes(generateInfo)">Generate</button>
     </div>
 </div>

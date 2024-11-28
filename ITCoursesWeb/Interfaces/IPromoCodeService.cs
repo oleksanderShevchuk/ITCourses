@@ -9,5 +9,6 @@ namespace ITCoursesWeb.Interfaces
         Task<PromoCodeDto> AddAsync(string courseId);
         Task<PromoCodeDto> EditAsync(string id, UpdatePromoCodeDto updatePromoCodeDto);
         Task<bool> DeleteAsync(string id);
+        void GeneratePromoCodes(int countPromoCodes, string courseId, DateTime dateTo, int discount);
     }
 }

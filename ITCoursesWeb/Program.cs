@@ -1,5 +1,6 @@
 using ITCoursesWeb.Data;
 using ITCoursesWeb.Interfaces;
+using ITCoursesWeb.Repositories;
 using ITCoursesWeb.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(conn
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IPromoCodeService, PromoCodeService>();
+builder.Services.AddScoped<PromoCodeRepository>();
 
 builder.Services.AddSignalR();
 
