@@ -1,13 +1,13 @@
 ﻿app.controller('detailsController', function ($scope, $http, $rootScope) {
     $scope.currentView = '';
-    $scope.teacherInfo = {};
-    $scope.promoCodes = []; 
-    $scope.showAddPromoCodeForm = false; 
-    $scope.actions = false; 
+    $scope.personInfo = {};
+    $scope.promoCodes = [];
+    $scope.showAddPromoCodeForm = false;
+    $scope.actions = false;
     $scope.generateInfo = {};
 
-    // Function to fetch teacher details
-    $scope.loadTeacherDetails = function () {
+    // Function to fetch person details
+    $scope.loadPersonDetails = function () {
         const courseId = $rootScope.courseId;
         if (!courseId) {
             return;
@@ -15,11 +15,11 @@
 
         $http.get('/api/person/get-all-by-course-id/' + courseId)
             .then(function (response) {
-                $scope.teachers = response.data; 
+                $scope.persons = response.data;
             })
             .catch(function (error) {
-                console.error('Error fetching teacher details:', error);
-                alert('Could not load teacher details.');
+                console.error('Error fetching person details:', error);
+                alert('Could not load person details.');
             });
     };
 
@@ -68,6 +68,7 @@
     $scope.savePromoCode = function (promoCode) {
         $http.put('/api/promocode/' + promoCode.id, promoCode)
             .then(function () {
+                $scope.loadPromoCodes();
                 promoCode.isEditing = false;
                 delete promoCode.original;
             })
@@ -97,37 +98,37 @@
             });
     };
 
-    // Add edit functionality for teacher
-    $scope.editTeacher = function (person) {
+    // Add edit functionality for person
+    $scope.editPerson = function (person) {
         person.isEditing = true;
     };
 
-    $scope.saveTeacher = function (person) {
+    $scope.savePerson = function (person) {
         $http.put('/api/person/' + person.id, person)
             .then(function () {
                 person.isEditing = false;
             })
             .catch(function (error) {
-                console.error('Error saving teacher details:', error);
+                console.error('Error saving person details:', error);
             });
     };
 
-    $scope.cancelEditTeacher = function (person) {
-        angular.copy($scope.teacherInfo.original, $scope.teacherInfo);
+    $scope.cancelEditPerson = function (person) {
+        angular.copy($scope.personInfo.original, $scope.personInfo);
         person.isEditing = false;
-        delete $scope.teacherInfo.original;
+        delete $scope.personInfo.original;
     };
 
-    // Delete Teacher from course
-    $scope.deleteTeacherFromCourse = function (teacherId) {
-        if (!confirm('Are you sure you want to delete teacher from course?')) {
+    // Delete Person from course
+    $scope.deletePersonFromCourse = function (personId) {
+        if (!confirm('Are you sure you want to delete person from course?')) {
             return;
         }
         const courseId = $rootScope.courseId;
 
-        $http.delete('/api/person/' + teacherId + '/' + courseId)
+        $http.delete('/api/person/' + personId + '/' + courseId)
             .then(function () {
-                $scope.loadTeacherDetails();
+                $scope.loadPersonDetails();
             })
             .catch(function (error) {
                 console.error('Error deleting person from course:', error);
@@ -136,7 +137,7 @@
 
     // Load generatePromoCodes
     $scope.loadGeneratePromoCodes = function () {
-        $scope.actions = true; 
+        $scope.actions = true;
     };
 
     // Function to generate promo codes
@@ -144,7 +145,7 @@
         generateInfo.courseId = $rootScope.courseId;
         if (!generateInfo.courseId) {
             console.error('Course Id is missing!');
-            return; 
+            return;
         }
         $http.post('/api/promocode/generate', generateInfo)
             .then(function () {
@@ -160,8 +161,8 @@
     $scope.switchView = function (view) {
         $scope.currentView = view;
 
-        if (view === 'teacher') {
-            $scope.loadTeacherDetails();
+        if (view === 'person') {
+            $scope.loadPersonDetails();
         } else if (view === 'promocodes') {
             $scope.loadPromoCodes();
         } else if (view === 'generatePromoCodes') {
@@ -177,7 +178,7 @@
 
     // Listen for goToActions event
     $scope.$on('goToActions', function () {
-        $scope.actions = true; 
+        $scope.actions = true;
     });
 
     // Initialize with the default view

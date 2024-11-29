@@ -96,6 +96,7 @@ namespace ITCoursesWeb.Services
         public async Task<IEnumerable<CourseDto>> GetAllAsync()
         {
             return await _context.Courses
+                .OrderBy(c => c.Number)
                 .Select(c => new CourseDto
                 {
                     Id = c.Id,

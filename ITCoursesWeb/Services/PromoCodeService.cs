@@ -23,6 +23,7 @@ namespace ITCoursesWeb.Services
             var promoCodes = _context.PromoCodes.Where(p => p.CourseId == courseId);
             foreach (var promoCode in promoCodes)
             {
+                var person = _context.Persons.FirstOrDefault(p => p.Id == promoCode.PersonId);
                 yield return new PromoCodeDto
                 {
                     Id = promoCode.Id,
@@ -31,7 +32,7 @@ namespace ITCoursesWeb.Services
                     DateTo = promoCode.DateTo,
                     IsUsed = promoCode.IsUsed,
                     Percent = promoCode.Percent,
-                    PersonEmail = promoCode.Person?.Email!,
+                    PersonEmail = person?.Email,
                 };
             }
         }
@@ -69,7 +70,7 @@ namespace ITCoursesWeb.Services
                 return null!;
 
             promoCode.IsUsed = Convert.ToBoolean(updatePromoCodeDto.IsUsed);
-            promoCode.Percent = updatePromoCodeDto.Percent;
+            promoCode.Percent = updatePromoCodeDto.Percent > 20 ? 20 : updatePromoCodeDto.Percent;
             promoCode.DateTo = updatePromoCodeDto.DateTo;
 
             var person = await _context.Persons.FirstOrDefaultAsync(p => p.Email == updatePromoCodeDto.PersonEmail);

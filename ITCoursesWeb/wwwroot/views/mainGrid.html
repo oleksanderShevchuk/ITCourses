@@ -2,11 +2,11 @@
     <table border="1" style="width: 100%; text-align: left; table-layout: fixed;">
         <thead>
             <tr>
-                <th style="width: 8%; text-align: center;">Number</th>
-                <th style="width: 10%; text-align: center;">Image</th>
-                <th style="width: 15%; text-align: center;">Name</th>
-                <th style="width: 42%; text-align: center;">Description</th>
-                <th style="width: 15%; text-align: center;">Teacher</th>
+                <th style="width: 6%; text-align: center;">Number</th>
+                <th style="width: 9%; text-align: center;">Image</th>
+                <th style="width: 10%; text-align: center;">Name</th>
+                <th style="width: 45%; text-align: center;">Description</th>
+                <th style="width: 10%; text-align: center;">Teacher</th>
                 <th style="width: 10%; text-align: center;">Price</th>
             </tr>
         </thead>
@@ -15,18 +15,21 @@
                 <td style="text-align: center;" ng-click="selectCourse(course)">{{ course.number }}</td>
                 <td style="text-align: center; width: 100%; height: 100%">
                     <input style="width: 90%;" ng-if="course.isEditing && course === selectedCourse" type="text" ng-model="course.imgUrl" />
-                    <img ng-if="!course.isEditing" ng-src="{{ course.imgUrl }}" alt="{{ course.name }}" style="width: 75%; height: 75px;" />
+                    <img ng-if="!course.isEditing" ng-src="{{ course.imgUrl }}" alt="{{ course.name }}" style="width: 75%; height: 80px;" />
                 </td>
                 <td style="text-align: center;">
-                    <input ng-if="course.isEditing && course === selectedCourse" type="text" ng-model="course.name" />
-                    <span ng-if="!course.isEditing">{{ course.name }}</span>
+                    <input style="width: 90%;" ng-if="course.isEditing && course === selectedCourse" type="text" ng-model="course.name" />
+                    <span style="width: 90%;" ng-if="!course.isEditing">{{ course.name }}</span>
                 </td>
-                <td style="text-align: left;">
+                <td style="text-align: left; padding: 0 10px 0 10px;">
                     <textarea ng-if="course.isEditing && course === selectedCourse" ng-model="course.description" style="width: 100%;"></textarea>
-                    <span ng-if="!course.isEditing">{{ course.description }}</span>
+                    <span ng-if="!course.isEditing">
+                        {{ course.description.split(' ').slice(0, 30).join(' ') }}{{ course.description.split(' ').length > 30 ? '...' : '' }}
+                    </span>
                 </td>
+
                 <td style="text-align: center;">
-                    <input ng-if="course.isEditing && course === selectedCourse" type="text" ng-model="course.teacherEmail" />
+                    <input style="width: 90%;" ng-if="course.isEditing && course === selectedCourse" type="text" ng-model="course.teacherEmail" />
                     <span ng-if="!course.isEditing">{{ course.teacherName }}</span>
                 </td>
                 <td style="text-align: center;">
@@ -41,13 +44,13 @@
                     <input style="width: 95%;" type="text" ng-model="newCourse.imgUrl" placeholder="Enter path to img" />
                 </td>
                 <td style="text-align: center;">
-                    <input type="text" ng-model="newCourse.name" placeholder="Enter course name" />
+                    <input style="width: 90%;" type="text" ng-model="newCourse.name" placeholder="Enter course name" />
                 </td>
                 <td style="text-align: left;">
                     <textarea ng-model="newCourse.description" placeholder="Enter course description" style="width: 100%;"></textarea>
                 </td>
                 <td style="text-align: center;">
-                    <input type="text" ng-model="newCourse.teacherEmail" placeholder="Enter teacher email" />
+                    <input style="width: 90%;" type="text" ng-model="newCourse.teacherEmail" placeholder="Enter teacher email" />
                 </td>
                 <td style="text-align: center;">
                     <input style="width: 90%;" type="text" ng-model="newCourse.price" placeholder="Enter price" />

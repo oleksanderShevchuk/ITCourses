@@ -16,15 +16,24 @@ namespace ITCoursesWeb.Services
         public async Task<PersonDto> GetByEmailAsync(string email)
         {
             var person = await _context.Persons.FirstOrDefaultAsync(p => p.Email == email);
+            if (person == null)
+                return null!;
+            var nameCourses = new List<string>();
+            foreach (var course in person.Courses)
+            {
+                nameCourses.Add(course.Name);
+            }
+            var countPromoCodes = _context.PromoCodes.Where(p => p.PersonId == person.Id);
+
             return new PersonDto
             {
                 Id = person!.Id,
                 AboutMe = person.AboutMe!,
-                Courses = person.Courses,
+                Courses = nameCourses,
                 Email = person.Email,
                 Name = person.Name,
                 PersonType = person.PersonType.ToString(),
-                PromoCodes = person.PromoCodes,
+                CountPromoCodes = countPromoCodes.Count(),
             };
         }
 
@@ -39,6 +48,12 @@ namespace ITCoursesWeb.Services
             person.AboutMe = updatePersonDto.AboutMe;
 
             await _context.SaveChangesAsync();
+            var nameCourses = new List<string>();
+            foreach (var course in person.Courses)
+            {
+                nameCourses.Add(course.Name);
+            }
+            var countPromoCodes = _context.PromoCodes.Where(p => p.PersonId == person.Id);
 
             return new PersonDto
             {
@@ -46,9 +61,9 @@ namespace ITCoursesWeb.Services
                 Name = person.Name,
                 Email = person.Email,
                 AboutMe = person.AboutMe,
-                Courses = person.Courses,
+                Courses = nameCourses,
                 PersonType = person.PersonType.ToString(),
-                PromoCodes = person.PromoCodes,
+                CountPromoCodes = countPromoCodes.Count(),
             };
         }
 
@@ -68,7 +83,7 @@ namespace ITCoursesWeb.Services
         }
         public async Task<List<ReportInformation>> GetReportInformationAsync()
         {
-            var persons = await _context.Persons.ToListAsync();
+            var persons = await _context.Persons.ToListAsync();//join
             if (persons == null)
                 return null!;
 
@@ -134,7 +149,21 @@ namespace ITCoursesWeb.Services
             foreach (var personCourse in personCourses)
             {
                 var person = await _context.Persons.FirstOrDefaultAsync(c => c.Id == personCourse.PersonId);
+
                 if (person != null)
+                {
+                    var nameCourses = new List<string>();
+                    var personCourses2 = _context.PersonCourses.Where(p => p.PersonId == person.Id);
+                    foreach (var personCourse2 in personCourses2)
+                    {
+                        var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == personCourse2.CourseId);
+                        if (course != null)
+                        {
+                            nameCourses.Add(course.Name);
+                        }
+                    }
+                    var countPromoCodes = _context.PromoCodes.Where(p => p.PersonId == person.Id);
+
                     persons.Add(new PersonDto
                     {
                         Id = person!.Id,
@@ -142,9 +171,10 @@ namespace ITCoursesWeb.Services
                         Email = person.Email,
                         AboutMe = person.AboutMe,
                         PersonType = person.PersonType.ToString(),
-                        Courses = person.Courses,
-                        PromoCodes = person.PromoCodes,
+                        Courses = nameCourses,
+                        CountPromoCodes = countPromoCodes.Count(),
                     });
+                }
             }
 
             return persons;

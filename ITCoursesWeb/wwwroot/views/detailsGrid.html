@@ -1,146 +1,143 @@
 ﻿<div ng-controller="detailsController">
     <!-- Toggle Buttons -->
     <div style="margin: 5px 0 0 25px;">
-        <button ng-if="!actions" ng-click="switchView('teacher')" ng-class="{ 'active': currentView === 'teacher' }">Students</button>
+        <button ng-if="!actions" ng-click="switchView('person')" ng-class="{ 'active': currentView === 'person' }">Persons</button>
         <button ng-if="!actions" ng-click="switchView('promocodes')" ng-class="{ 'active': currentView === 'promocodes' }">PromoCodes</button>
         <button ng-if="actions" ng-click="switchView('generatePromoCodes')" ng-class="{ 'active': currentView === 'generatePromoCodes' }">Generate promo codes</button>
     </div>
 
-    <!-- Teachers Information -->
-    <div ng-if="currentView === 'teacher'" style="margin-left: 25px;">
-        <h5>Students</h5>
-
-        <table border="1" style="text-align: center; border-collapse: collapse; border-color: #dee2e6; width: 90%;">
-            <thead>
-                <tr style="background-color: #007bff; color: white;">
-                    <th style="width: 10%;">Name</th>
-                    <th style="width: 15%;">Email</th>
-                    <th style="width: 20%;">About Me</th>
-                    <th style="width: 20%;">Promo Codes</th>
-                    <th style="width: 20%;">Courses</th>
-                    <th style="width: 15%;">Actions</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr ng-repeat="teacher in teachers">
-                    <td>
-                        <span ng-if="!teacher.isEditing">{{ teacher.name }}</span>
-                        <input type="text" ng-if="teacher.isEditing" ng-model="teacher.name" style="width: 100%;">
-                    </td>
-
-                    <td>
-                        <span ng-if="!teacher.isEditing">{{ teacher.email }}</span>
-                        <input type="text" ng-if="teacher.isEditing" ng-model="teacher.email" style="width: 100%;">
-                    </td>
-
-                    <td>
-                        <span ng-if="!teacher.isEditing">{{ teacher.aboutMe }}</span>
-                        <textarea ng-if="teacher.isEditing" ng-model="teacher.aboutMe" style="width: 100%;"></textarea>
-                    </td>
-
-                    <td>
-                        <ul>
-                            <li ng-repeat="promoCode in teacher.promoCodes">{{ promoCode }}</li>
-                        </ul>
-                    </td>
-
-                    <td>
-                        <ul>
-                            <li ng-repeat="course in teacher.courses">{{ course }}</li>
-                        </ul>
-                    </td>
-
-                    <td >
-                        <button ng-if="!teacher.isEditing" ng-click="editTeacher(teacher)">Edit</button>
-                        <button ng-if="teacher.isEditing" ng-click="saveTeacher(teacher)">Save</button>
-                        <button ng-if="teacher.isEditing" ng-click="cancelEditTeacher(teacher)">Cancel</button>
-                        <button ng-click="deleteTeacherFromCourse(teacher.id)">Delete</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- PromoCodes Information -->
-    <div ng-if="currentView === 'promocodes'" style="margin: 0 25px 0 25px;">
-        <h3>PromoCodes</h3>
-        <div class="table-container">
-            <table border="1" style="width: 100%; text-align: center; table-layout: fixed;">
+    <!-- Persons Information -->
+    <div ng-if="currentView === 'person'" style="margin: 0 25px 0 25px;">
+        <h5>Persons</h5>
+        <div class="scrollable-rows" style="max-height: 260px;">
+            <table border="1" style="text-align: center; border-collapse: collapse; border-color: #dee2e6; ">
                 <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Discount</th>
-                        <th>Is Used</th>
-                        <th>Expiration Date</th>
-                        <th>Person Email</th>
-                        <th>Actions</th>
+                    <tr style="background-color: #007bff; color: white;">
+                        <th style="width: 10%;">Name</th>
+                        <th style="width: 15%;">Email</th>
+                        <th style="width: 30%;">About Me</th>
+                        <th style="width: 10%;">Courses</th>
+                        <th style="width: 8%;">Count Promo</th>
+                        <th style="width: 10%;">Actions</th>
                     </tr>
                 </thead>
+
+                <tbody>
+                    <tr ng-repeat="person in persons">
+                        <td>
+                            <span ng-if="!person.isEditing">{{ person.name }}</span>
+                            <input type="text" ng-if="person.isEditing" ng-model="person.name" style="width: 100%;">
+                        </td>
+
+                        <td>
+                            <span ng-if="!person.isEditing">{{ person.email }}</span>
+                            <input type="text" ng-if="person.isEditing" ng-model="person.email" style="width: 100%;">
+                        </td>
+
+                        <td style="text-align: left; padding: 5px 10px;">
+                            <span ng-if="!person.isEditing">{{ person.aboutMe }}</span>
+                            <textarea ng-if="person.isEditing" ng-model="person.aboutMe" style="width: 100%;"></textarea>
+                        </td>
+
+                        <td>
+                            <span ng-repeat="course in person.courses">{{ course }}<span ng-if="!$last">,  </span></span>
+                        </td>
+
+                        <td>
+                            <span>{{ person.countPromoCodes }}</span>
+                        </td>
+
+                        <td>
+                            <button ng-if="!person.isEditing" ng-click="editPerson(person)">Edit</button>
+                            <button ng-if="person.isEditing" ng-click="savePerson(person)">Save</button>
+                            <button ng-if="person.isEditing" ng-click="cancelEditPerson(person)">Cancel</button>
+                            <button ng-click="deletePersonFromCourse(person.id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
-            <div class="scrollable-rows">
-                <table border="1" style="width: 100%; text-align: center; table-layout: fixed;">
-                    <tbody>
-                        <tr ng-repeat="promo in promoCodes">
-                            <td>{{ promo.code }}</td>
-                            <td>
-                                <span ng-if="!promo.isEditing">{{ promo.percent }}%</span>
-                                <input type="number" ng-if="promo.isEditing" ng-model="promo.percent">
-                            </td>
-                            <td>
-                                <span ng-if="!promo.isEditing">{{ promo.isUsed ? 'True' : 'False' }}</span>
-                                <select ng-if="promo.isEditing" ng-model="promo.isUsed">
-                                    <option value="true">True</option>
-                                    <option value="false">False</option>
-                                </select>
-                            </td>
-                            <td>
-                                <span ng-if="!promo.isEditing">{{ promo.dateTo | date:'yyyy-MM-dd HH:mm:ss' }}</span>
-                                <input type="datetime-local" ng-if="promo.isEditing" ng-model="promo.dateTo">
-                            </td>
-                            <td>
-                                <span ng-if="!promo.isEditing">{{ promo.personEmail }}</span>
-                                <input type="email" ng-if="promo.isEditing" ng-model="promo.personEmail">
-                            </td>
-                            <td>
-                                <button ng-if="!promo.isEditing" ng-click="editPromoCode(promo)">Edit</button>
-                                <button ng-if="promo.isEditing" ng-click="savePromoCode(promo)">Save</button>
-                                <button ng-if="promo.isEditing" ng-click="cancelEditPromoCode(promo)">Cancel</button>
-                                <button ng-click="deletePromoCode(promo.id)">Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
-        <button ng-click="addPromoCode()">
-            {{ showAddPromoCodeForm ? 'Hide Add Promo Code' : 'Add New Promo Code' }}
-        </button>
     </div>
 
-    <!-- Actions -->
-    <div ng-if="currentView === 'generatePromoCodes'" style="margin-left: 25px;">
-        <h3>Generate promo codes</h3>
-        <table border="1" style="border-color: #dee2e6; width: 100%; text-align: left; table-layout: fixed; ">
-            <tr>
-                <th style="width: 30%;">Count of generated promo codes</th>
-                <td style="width: 70%;">
-                    <input type="number" ng-model="generateInfo.countPromoCodes" style="width: 100%;">
-                </td>
-            </tr>
-            <tr>
-                <th style="width: 30%;">Date to expired code</th>
-                <td>
-                    <input type="datetime-local" ng-model="generateInfo.dateTo">
-                </td>
-            </tr>
-            <tr>
-                <th style="width: 30%;">Discount</th>
-                <td style="width: 70%;">
-                    <input type="number" ng-model="generateInfo.discount">
-                </td>
-            </tr>
-        </table>
-        <button ng-click="generatePromoCodes(generateInfo)">Generate</button>
+        <!-- PromoCodes Information -->
+        <div ng-if="currentView === 'promocodes'" style="margin: 0 25px 0 25px;">
+            <h3>PromoCodes</h3>
+            <div class="table-container">
+                <table border="1" style="width: 100%; text-align: center; table-layout: fixed;">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Discount</th>
+                            <th>Is Used</th>
+                            <th>Expiration Date</th>
+                            <th>Person Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="scrollable-rows">
+                    <table border="1" style="width: 100%; text-align: center; table-layout: fixed;">
+                        <tbody>
+                            <tr ng-repeat="promo in promoCodes">
+                                <td>{{ promo.code }}</td>
+                                <td>
+                                    <span ng-if="!promo.isEditing">{{ promo.percent }}%</span>
+                                    <input type="number" ng-if="promo.isEditing" ng-model="promo.percent">
+                                </td>
+                                <td>
+                                    <span ng-if="!promo.isEditing">{{ promo.isUsed ? 'True' : 'False' }}</span>
+                                    <select ng-if="promo.isEditing" ng-model="promo.isUsed">
+                                        <option value="true">True</option>
+                                        <option value="false">False</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <span ng-if="!promo.isEditing">{{ promo.dateTo | date:'yyyy-MM-dd HH:mm:ss' }}</span>
+                                    <input type="datetime-local" ng-if="promo.isEditing" ng-model="promo.dateTo">
+                                </td>
+                                <td>
+                                    <span ng-if="!promo.isEditing">{{ promo.personEmail }}</span>
+                                    <input type="email" ng-if="promo.isEditing" ng-model="promo.personEmail">
+                                </td>
+                                <td>
+                                    <button ng-if="!promo.isEditing" ng-click="editPromoCode(promo)">Edit</button>
+                                    <button ng-if="promo.isEditing" ng-click="savePromoCode(promo)">Save</button>
+                                    <button ng-if="promo.isEditing" ng-click="cancelEditPromoCode(promo)">Cancel</button>
+                                    <button ng-click="deletePromoCode(promo.id)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button ng-click="addPromoCode()">
+                {{ showAddPromoCodeForm ? 'Hide Add Promo Code' : 'Add New Promo Code' }}
+            </button>
+        </div>
+
+        <!-- Actions -->
+        <div ng-if="currentView === 'generatePromoCodes'" style="margin-left: 25px;">
+            <h3>Generate promo codes</h3>
+            <table border="1" style="border-color: #dee2e6; width: 100%; text-align: left; table-layout: fixed; ">
+                <tr>
+                    <th style="width: 30%;">Count of generated promo codes</th>
+                    <td style="width: 70%;">
+                        <input type="number" ng-model="generateInfo.countPromoCodes" style="width: 100%;">
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 30%;">Date to expired code</th>
+                    <td>
+                        <input type="datetime-local" ng-model="generateInfo.dateTo">
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 30%;">Discount</th>
+                    <td style="width: 70%;">
+                        <input type="number" ng-model="generateInfo.discount">
+                    </td>
+                </tr>
+            </table>
+            <button ng-click="generatePromoCodes(generateInfo)">Generate</button>
+        </div>
     </div>
-</div>

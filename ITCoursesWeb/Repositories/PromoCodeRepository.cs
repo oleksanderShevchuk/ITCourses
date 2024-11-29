@@ -14,6 +14,15 @@ namespace ITCoursesWeb.Repositories
 
         public void GeneratePromoCodes(int countPromoCodes, string courseId, DateTime dateTo, int discount)
         {
+            if (string.IsNullOrWhiteSpace(courseId))
+            {
+                throw new ArgumentException("CourseId cannot be null or empty.", nameof(courseId));
+            }
+
+            if (!Guid.TryParse(courseId, out var courseGuid))
+            {
+                throw new ArgumentException("Invalid CourseId format. It must be a valid GUID.", nameof(courseId));
+            }
             using (var connection = new SqlConnection(_connectionString))
             {
                 using (var command = new SqlCommand("GeneratePromoCodes", connection))
@@ -21,7 +30,7 @@ namespace ITCoursesWeb.Repositories
                     command.CommandType = CommandType.StoredProcedure;
 
                     command.Parameters.AddWithValue("@CountPromoCodes", countPromoCodes);
-                    command.Parameters.AddWithValue("@CourseId", courseId);
+                    command.Parameters.Add("@CourseId", SqlDbType.UniqueIdentifier).Value = Guid.Parse(courseId);
                     command.Parameters.AddWithValue("@DateTo", dateTo);
                     command.Parameters.AddWithValue("@Discount", discount);
 
