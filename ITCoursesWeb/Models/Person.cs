@@ -15,7 +15,7 @@ namespace ITCoursesWeb.Models
     }
     public enum PersonType
     {
-        Stusent,
+        Student,
         Teacher
     }
 }

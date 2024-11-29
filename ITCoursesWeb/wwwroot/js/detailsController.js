@@ -8,14 +8,14 @@
 
     // Function to fetch teacher details
     $scope.loadTeacherDetails = function () {
-        const teacherEmail = $rootScope.teacherEmail;
-        if (!teacherEmail) {
+        const courseId = $rootScope.courseId;
+        if (!courseId) {
             return;
         }
 
-        $http.get('/api/person/by-email/' + teacherEmail)
+        $http.get('/api/person/get-all-by-course-id/' + courseId)
             .then(function (response) {
-                $scope.teacherInfo = response.data; 
+                $scope.teachers = response.data; 
             })
             .catch(function (error) {
                 console.error('Error fetching teacher details:', error);
@@ -98,25 +98,23 @@
     };
 
     // Add edit functionality for teacher
-    $scope.editTeacher = function () {
-        $scope.teacherInfo.isEditing = true;
-        $scope.teacherInfo.original = angular.copy($scope.teacherInfo);
+    $scope.editTeacher = function (person) {
+        person.isEditing = true;
     };
 
-    $scope.saveTeacher = function () {
-        $http.put('/api/person/' + $scope.teacherInfo.id, $scope.teacherInfo)
+    $scope.saveTeacher = function (person) {
+        $http.put('/api/person/' + person.id, person)
             .then(function () {
-                $scope.teacherInfo.isEditing = false;
-                delete $scope.teacherInfo.original;
+                person.isEditing = false;
             })
             .catch(function (error) {
                 console.error('Error saving teacher details:', error);
             });
     };
 
-    $scope.cancelEditTeacher = function () {
+    $scope.cancelEditTeacher = function (person) {
         angular.copy($scope.teacherInfo.original, $scope.teacherInfo);
-        $scope.teacherInfo.isEditing = false;
+        person.isEditing = false;
         delete $scope.teacherInfo.original;
     };
 

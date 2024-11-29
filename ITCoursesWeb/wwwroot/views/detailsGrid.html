@@ -1,63 +1,65 @@
 ﻿<div ng-controller="detailsController">
     <!-- Toggle Buttons -->
     <div style="margin: 5px 0 0 25px;">
-        <button ng-if="!actions" ng-click="switchView('teacher')" ng-class="{ 'active': currentView === 'teacher' }">Teacher</button>
+        <button ng-if="!actions" ng-click="switchView('teacher')" ng-class="{ 'active': currentView === 'teacher' }">Students</button>
         <button ng-if="!actions" ng-click="switchView('promocodes')" ng-class="{ 'active': currentView === 'promocodes' }">PromoCodes</button>
         <button ng-if="actions" ng-click="switchView('generatePromoCodes')" ng-class="{ 'active': currentView === 'generatePromoCodes' }">Generate promo codes</button>
     </div>
 
-    <!-- Teacher Information -->
+    <!-- Teachers Information -->
     <div ng-if="currentView === 'teacher'" style="margin-left: 25px;">
-        <h3>Teacher Information</h3>
-        <table border="1" style="border-color: #dee2e6; width: 100%; text-align: left; table-layout: fixed; ">
-            <tr>
-                <th style="width: 30%;">Name</th>
-                <td style="width: 70%;">
-                    <span ng-if="!teacherInfo.isEditing">{{ teacherInfo.name }}</span>
-                    <input type="text" ng-if="teacherInfo.isEditing" ng-model="teacherInfo.name" style="width: 100%;">
-                </td>
-            </tr>
-            <tr>
-                <th style="width: 30%;">Email</th>
-                <td style="width: 70%;">
-                    <span ng-if="!teacherInfo.isEditing">{{ teacherInfo.email }}</span>
-                    <input type="text" ng-if="teacherInfo.isEditing" ng-model="teacherInfo.email" style="width: 100%;">
-                </td>
-            </tr>
-            <tr>
-                <th style="width: 30%;">AboutMe</th>
-                <td style="width: 70%;">
-                    <span ng-if="!teacherInfo.isEditing">{{ teacherInfo.aboutMe }}</span>
-                    <textarea style="width: 100%;" ng-if="teacherInfo.isEditing" ng-model="teacherInfo.aboutMe"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <th style="width: 30%;">PromoCodes</th>
-                <td style="width: 70%;">
-                    <ul>
-                        <li ng-repeat="promoCode in teacherInfo.promoCodes">
-                            {{ promoCode }}
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <th style="width: 30%;">Courses</th>
-                <td style="width: 70%;">
-                    <ul>
-                        <li ng-repeat="course in teacherInfo.courses">
-                            {{ course }}
-                        </li>
-                    </ul>
-                </td>
-            </tr>
+        <h5>Students</h5>
+
+        <table border="1" style="text-align: center; border-collapse: collapse; border-color: #dee2e6; width: 90%;">
+            <thead>
+                <tr style="background-color: #007bff; color: white;">
+                    <th style="width: 10%;">Name</th>
+                    <th style="width: 15%;">Email</th>
+                    <th style="width: 20%;">About Me</th>
+                    <th style="width: 20%;">Promo Codes</th>
+                    <th style="width: 20%;">Courses</th>
+                    <th style="width: 15%;">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="teacher in teachers">
+                    <td>
+                        <span ng-if="!teacher.isEditing">{{ teacher.name }}</span>
+                        <input type="text" ng-if="teacher.isEditing" ng-model="teacher.name" style="width: 100%;">
+                    </td>
+
+                    <td>
+                        <span ng-if="!teacher.isEditing">{{ teacher.email }}</span>
+                        <input type="text" ng-if="teacher.isEditing" ng-model="teacher.email" style="width: 100%;">
+                    </td>
+
+                    <td>
+                        <span ng-if="!teacher.isEditing">{{ teacher.aboutMe }}</span>
+                        <textarea ng-if="teacher.isEditing" ng-model="teacher.aboutMe" style="width: 100%;"></textarea>
+                    </td>
+
+                    <td>
+                        <ul>
+                            <li ng-repeat="promoCode in teacher.promoCodes">{{ promoCode }}</li>
+                        </ul>
+                    </td>
+
+                    <td>
+                        <ul>
+                            <li ng-repeat="course in teacher.courses">{{ course }}</li>
+                        </ul>
+                    </td>
+
+                    <td >
+                        <button ng-if="!teacher.isEditing" ng-click="editTeacher(teacher)">Edit</button>
+                        <button ng-if="teacher.isEditing" ng-click="saveTeacher(teacher)">Save</button>
+                        <button ng-if="teacher.isEditing" ng-click="cancelEditTeacher(teacher)">Cancel</button>
+                        <button ng-click="deleteTeacherFromCourse(teacher.id)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
         </table>
-        <div>
-            <button ng-if="!teacherInfo.isEditing" ng-click="editTeacher()">Edit</button>
-            <button ng-if="teacherInfo.isEditing" ng-click="saveTeacher()">Save</button>
-            <button ng-if="teacherInfo.isEditing" ng-click="cancelEditTeacher()">Cancel</button>
-            <button ng-click="deleteTeacherFromCourse(teacherInfo.id)">Delete</button>
-        </div>
     </div>
 
     <!-- PromoCodes Information -->

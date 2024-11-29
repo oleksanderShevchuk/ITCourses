@@ -67,8 +67,9 @@
             <button ng-if="selectedCourse && selectedCourse.isEditing" ng-click="cancelEdit(selectedCourse); $event.stopPropagation();">Cancel</button>
         </div>
         <!-- Actions -->
-        <div style="display: flex; align-items: center; margin-right: 25px;">
+        <div style="display: flex; gap: 10px; align-items: center; margin-right: 25px; ">
             <button ng-if="selectedCourse" ng-click="goToActions()">Actions</button>
+            <button ng-click="goToReport()">Report</button>
         </div>
         <!-- Pagination Controls -->
         <div class="pagination-controls" style="display: flex; align-items: center; margin-right: 25px;">

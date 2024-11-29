@@ -190,9 +190,16 @@
         });
     };
 
-    // 
+    // event for Actions
     $scope.goToActions = function () {
         $rootScope.$broadcast('goToActions');
+    };
+
+    // Go to page Report
+    $scope.goToReport = function () {
+        if (confirm(`Are you sure you want to go to report page?`)) {
+            window.location.href = '/views/report.html';
+        }
     };
 
     // Initialize by fetching courses

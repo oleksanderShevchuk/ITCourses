@@ -48,5 +48,25 @@ namespace ITCoursesWeb.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("GetReportInformation")]
+        public async Task<IActionResult> GetReportInformationByPersonId()
+        {
+            var reportInformation = await _personService.GetReportInformationAsync();
+            if (reportInformation == null)
+                return NotFound();
+
+            return Ok(reportInformation);
+        }
+        
+        [HttpGet("get-all-by-course-id/{courseId}")]
+        public async Task<IActionResult> GetAllByCourseId(string courseId)
+        {
+            var persons = await _personService.GetAllByCourseIdAsync(courseId);
+            if (persons == null)
+                return NotFound();
+
+            return Ok(persons);
+        }
     }
 }
