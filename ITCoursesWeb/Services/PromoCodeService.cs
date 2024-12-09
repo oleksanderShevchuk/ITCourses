@@ -3,24 +3,28 @@ using ITCoursesWeb.Data;
 using ITCoursesWeb.DTOs;
 using ITCoursesWeb.Interfaces;
 using ITCoursesWeb.Models;
-using System.Data;
 using Microsoft.EntityFrameworkCore;
 using ITCoursesWeb.Repositories;
+using ITCoursesWeb.DataAccess;
 
 namespace ITCoursesWeb.Services
 {
     public class PromoCodeService : IPromoCodeService
     {
+        private readonly SqPromoCode _sqPromoCode;
         private readonly AppDbContext _context;
         private readonly PromoCodeRepository _promoCodeRepository;
-        public PromoCodeService(AppDbContext context, PromoCodeRepository promoCodeRepository)
+
+        public PromoCodeService(SqPromoCode sqPromoCode, AppDbContext context, PromoCodeRepository promoCodeRepository)
         {
+            _sqPromoCode = sqPromoCode;
             _context = context;
             _promoCodeRepository = promoCodeRepository;
         }
+
         public IEnumerable<PromoCodeDto> GetAllByCourseId(string courseId)
         {
-            var promoCodes = _context.PromoCodes.Where(p => p.CourseId == courseId);
+            var promoCodes = _sqPromoCode.GetPromoCodesByCourseId(courseId);
             foreach (var promoCode in promoCodes)
             {
                 var person = _context.Persons.FirstOrDefault(p => p.Id == promoCode.PersonId);
@@ -49,8 +53,7 @@ namespace ITCoursesWeb.Services
                 Percent = 5,
             };
 
-            _context.PromoCodes.Add(promoCode);
-            await _context.SaveChangesAsync();
+            _sqPromoCode.AddPromoCode(promoCode);
 
             return new PromoCodeDto
             {
@@ -59,13 +62,13 @@ namespace ITCoursesWeb.Services
                 CourseId = promoCode.CourseId,
                 Percent = promoCode.Percent,
                 DateTo = promoCode.DateTo,
-                IsUsed= promoCode.IsUsed,
+                IsUsed = promoCode.IsUsed,
             };
         }
 
         public async Task<PromoCodeDto> EditAsync(string id, UpdatePromoCodeDto updatePromoCodeDto)
         {
-            var promoCode = await _context.PromoCodes.FindAsync(id);
+            var promoCode = _sqPromoCode.GetPromoCodeById(id);
             if (promoCode == null)
                 return null!;
 
@@ -81,7 +84,7 @@ namespace ITCoursesWeb.Services
                 person.PromoCodes.Add(promoCode);
             }
 
-            await _context.SaveChangesAsync();
+            _sqPromoCode.UpdatePromoCode(promoCode);
 
             return new PromoCodeDto
             {
@@ -97,12 +100,11 @@ namespace ITCoursesWeb.Services
 
         public async Task<bool> DeleteAsync(string id)
         {
-            var promoCode = await _context.PromoCodes.FindAsync(id);
+            var promoCode = _sqPromoCode.GetPromoCodeById(id);
             if (promoCode == null)
                 return false;
 
-            _context.PromoCodes.Remove(promoCode);
-            await _context.SaveChangesAsync();
+            _sqPromoCode.DeletePromoCode(id);
 
             return true;
         }
@@ -137,7 +139,7 @@ namespace ITCoursesWeb.Services
 
                 code = promoCode.ToString();
 
-                codeExists = _context.PromoCodes.Any(p => p.Code == code);
+                codeExists = _sqPromoCode.PromoCodeExists(code);
             }
             while (codeExists);
 
